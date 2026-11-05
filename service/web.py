@@ -3,7 +3,7 @@ import os
 
 from flask import Flask, jsonify, request
 
-RELEASE = os.environ.get("RELEASE", "1.0.0")
+RELEASE = os.environ.get("RELEASE", "1.1.0")
 app = Flask(__name__)
 
 
