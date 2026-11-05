@@ -1,0 +1,22 @@
+#!/bin/bash
+# Installs a packaged build into /opt/text-stats, restarts the service and verifies health.
+set -euo pipefail
+archive="$1"
+dest=/opt/text-stats
+
+mkdir -p "$dest"
+rm -rf "$dest/service"
+tar xzf "$archive" -C "$dest"
+[ -d "$dest/.venv" ] || python3 -m venv "$dest/.venv"
+"$dest/.venv/bin/pip" install -q -r "$dest/requirements.txt"
+systemctl restart text-stats
+
+for _ in $(seq 1 15); do
+    if body=$(curl -fsS http://localhost:5000/healthz); then
+        echo "Health check passed: $body"
+        exit 0
+    fi
+    sleep 1
+done
+echo "Health check failed" >&2
+exit 1
