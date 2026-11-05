@@ -1,0 +1,104 @@
+Started by an SCM change
+Checking out git https://github.com/ksamirdev/ensp461-devops-lab1.git into /var/lib/jenkins/workspace/text-stats-pipeline@script/c7d6e329e59a10382091761ebc2c41deb57551efdc0ed28a2146fb72bc04d9f1 to read Jenkinsfile
+The recommended git tool is: NONE
+No credentials specified
+ > git rev-parse --resolve-git-dir /var/lib/jenkins/workspace/text-stats-pipeline@script/c7d6e329e59a10382091761ebc2c41deb57551efdc0ed28a2146fb72bc04d9f1/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/ksamirdev/ensp461-devops-lab1.git # timeout=10
+Fetching upstream changes from https://github.com/ksamirdev/ensp461-devops-lab1.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.43.0'
+ > git fetch --tags --force --progress -- https://github.com/ksamirdev/ensp461-devops-lab1.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+Checking out Revision e93d90f1d77289bd092e63a1a0221d2831e67130 (refs/remotes/origin/main)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f e93d90f1d77289bd092e63a1a0221d2831e67130 # timeout=10
+Commit message: "Bump release to 1.1.0 to exercise automatic deployment"
+ > git rev-list --no-walk 86330543fd993df3600eda68a0140ce14d952143 # timeout=10
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Jenkins in /var/lib/jenkins/workspace/text-stats-pipeline
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] checkout
+The recommended git tool is: NONE
+No credentials specified
+ > git rev-parse --resolve-git-dir /var/lib/jenkins/workspace/text-stats-pipeline/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/ksamirdev/ensp461-devops-lab1.git # timeout=10
+Fetching upstream changes from https://github.com/ksamirdev/ensp461-devops-lab1.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.43.0'
+ > git fetch --tags --force --progress -- https://github.com/ksamirdev/ensp461-devops-lab1.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+Checking out Revision e93d90f1d77289bd092e63a1a0221d2831e67130 (refs/remotes/origin/main)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f e93d90f1d77289bd092e63a1a0221d2831e67130 # timeout=10
+Commit message: "Bump release to 1.1.0 to exercise automatic deployment"
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Build)
+[Pipeline] sh
++ python3 -m venv .venv
+[Pipeline] sh
++ .venv/bin/pip install -q -r requirements.txt
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Test)
+[Pipeline] sh
++ .venv/bin/python -m pytest -v --junitxml=test-results.xml
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-8.3.4, pluggy-1.7.0 -- /var/lib/jenkins/workspace/text-stats-pipeline/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /var/lib/jenkins/workspace/text-stats-pipeline
+collecting ... collected 5 items
+
+tests/test_web.py::test_healthz_reports_healthy PASSED                   [ 20%]
+tests/test_web.py::test_text_stats_counts_unique_words_case_insensitively PASSED [ 40%]
+tests/test_web.py::test_stats_endpoint_returns_counts PASSED             [ 60%]
+tests/test_web.py::test_stats_endpoint_rejects_invalid_text[body0] PASSED [ 80%]
+tests/test_web.py::test_stats_endpoint_rejects_invalid_text[body1] PASSED [100%]
+
+- generated xml file: /var/lib/jenkins/workspace/text-stats-pipeline/test-results.xml -
+============================== 5 passed in 0.11s ===============================
+Post stage
+[Pipeline] junit
+Recording test results
+[Checks API] No suitable checks publisher found.
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Package)
+[Pipeline] sh
++ mkdir -p dist
++ tar czf dist/text-stats-2.tar.gz service requirements.txt
+[Pipeline] archiveArtifacts
+Archiving artifacts
+Recording fingerprints
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Deploy)
+[Pipeline] sh
++ sudo /usr/local/bin/text-stats-deploy /var/lib/jenkins/workspace/text-stats-pipeline/dist/text-stats-2.tar.gz
+curl: (7) Failed to connect to localhost port 5000 after 0 ms: Couldn't connect to server
+Health check passed: {"healthy":true,"release":"1.1.0"}
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Declarative: Post Actions)
+[Pipeline] echo
+Build 2 deployed
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: SUCCESS

@@ -11,6 +11,7 @@ Text statistics Flask service built, tested, packaged and deployed by a Jenkins 
 - `Jenkinsfile` - declarative pipeline
 - `evidence/` - command logs and screenshots from the lab runs
 - `reports/` - lab reports, one PDF per question
+- `tools/` - lab host image, recorded setup scripts, screenshot and report generators
 
 ## Run locally
 ```

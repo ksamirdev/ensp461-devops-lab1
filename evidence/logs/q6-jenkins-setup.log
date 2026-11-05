@@ -1,0 +1,27 @@
+$ sudo mkdir -p /etc/systemd/system/jenkins.service.d
+
+$ printf '[Service]\nEnvironment="JAVA_OPTS=-Djava.awt.headless=true -Djenkins.install.runSetupWizard=false"\n' | sudo tee /etc/systemd/system/jenkins.service.d/override.conf
+[Service]
+Environment="JAVA_OPTS=-Djava.awt.headless=true -Djenkins.install.runSetupWizard=false"
+
+$ curl -fsSL -o /tmp/jpm.jar https://github.com/jenkinsci/plugin-installation-manager-tool/releases/download/2.16.0/jenkins-plugin-manager-2.16.0.jar
+
+$ sudo -u jenkins java -jar /tmp/jpm.jar --war /usr/share/java/jenkins.war -d /var/lib/jenkins/plugins --plugins workflow-aggregator git junit pipeline-stage-view pipeline-graph-view 2>&1 | tail -3
+Done
+
+$ sudo systemctl daemon-reload && sudo systemctl restart jenkins && systemctl is-active jenkins
+active
+
+$ sudo install -m 755 ~/ensp461-devops-lab1/deploy/text-stats-deploy /usr/local/bin/text-stats-deploy
+
+$ sudo install -m 644 ~/ensp461-devops-lab1/deploy/text-stats.service /etc/systemd/system/text-stats.service
+
+$ echo 'jenkins ALL=(root) NOPASSWD: /usr/local/bin/text-stats-deploy' | sudo tee /etc/sudoers.d/jenkins-deploy
+jenkins ALL=(root) NOPASSWD: /usr/local/bin/text-stats-deploy
+
+$ sudo chmod 440 /etc/sudoers.d/jenkins-deploy && sudo visudo -c -f /etc/sudoers.d/jenkins-deploy
+/etc/sudoers.d/jenkins-deploy: parsed OK
+
+$ sudo mkdir -p /opt/text-stats && sudo systemctl daemon-reload && sudo systemctl enable text-stats
+Created symlink /etc/systemd/system/multi-user.target.wants/text-stats.service → /etc/systemd/system/text-stats.service.
+

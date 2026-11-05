@@ -1,0 +1,1 @@
+{"_class":"org.jenkinsci.plugins.workflow.job.WorkflowJob","builds":[{"_class":"org.jenkinsci.plugins.workflow.job.WorkflowRun","duration":7475,"number":2,"result":"SUCCESS","timestamp":1793900587651},{"_class":"org.jenkinsci.plugins.workflow.job.WorkflowRun","duration":15493,"number":1,"result":"SUCCESS","timestamp":1793900452508}]}

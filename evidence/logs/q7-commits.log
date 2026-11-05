@@ -1,0 +1,15 @@
+$ git add deploy
+
+$ git commit -m "Add systemd unit and health-checked deploy script"
+[main a34c4f5] Add systemd unit and health-checked deploy script
+ 2 files changed, 34 insertions(+)
+ create mode 100755 deploy/text-stats-deploy
+ create mode 100644 deploy/text-stats.service
+
+$ git add Jenkinsfile
+
+$ git commit -m "Add declarative Jenkins pipeline with build, test, package and deploy stages"
+[main 8633054] Add declarative Jenkins pipeline with build, test, package and deploy stages
+ 1 file changed, 38 insertions(+)
+ create mode 100644 Jenkinsfile
+

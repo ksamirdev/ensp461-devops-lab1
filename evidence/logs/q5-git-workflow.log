@@ -1,0 +1,79 @@
+$ git init
+Initialized empty Git repository in /home/samir/ensp461-devops-lab1/.git/
+
+$ git status --short
+?? .gitignore
+?? README.md
+?? requirements.txt
+?? service/
+
+$ git add .
+
+$ git commit -m 'Add text statistics Flask service'
+[main (root-commit) 7b5d99f] Add text statistics Flask service
+ 5 files changed, 63 insertions(+)
+ create mode 100644 .gitignore
+ create mode 100644 README.md
+ create mode 100644 requirements.txt
+ create mode 100644 service/__init__.py
+ create mode 100644 service/web.py
+
+$ git checkout -b feature/test-suite
+Switched to a new branch 'feature/test-suite'
+
+$ git add tests
+
+$ git commit -m 'Add pytest suite for service endpoints'
+[feature/test-suite 9c2335f] Add pytest suite for service endpoints
+ 1 file changed, 29 insertions(+)
+ create mode 100644 tests/test_web.py
+
+$ python3 -m venv .venv && .venv/bin/pip install -q -r requirements.txt && .venv/bin/python -m pytest -v
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-8.3.4, pluggy-1.7.0 -- /home/samir/ensp461-devops-lab1/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/samir/ensp461-devops-lab1
+collecting ... collected 5 items
+
+tests/test_web.py::test_healthz_reports_healthy PASSED                   [ 20%]
+tests/test_web.py::test_text_stats_counts_unique_words_case_insensitively PASSED [ 40%]
+tests/test_web.py::test_stats_endpoint_returns_counts PASSED             [ 60%]
+tests/test_web.py::test_stats_endpoint_rejects_invalid_text[body0] PASSED [ 80%]
+tests/test_web.py::test_stats_endpoint_rejects_invalid_text[body1] PASSED [100%]
+
+============================== 5 passed in 0.05s ===============================
+
+$ git checkout main
+Switched to branch 'main'
+
+$ git merge --no-ff feature/test-suite -m 'Merge feature/test-suite into main'
+Merge made by the 'ort' strategy.
+ tests/test_web.py | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
+ create mode 100644 tests/test_web.py
+
+$ git tag -a v1.0.0 -m 'First tested release'
+
+$ git branch -a
+  feature/test-suite
+* main
+
+$ git log --oneline --graph --decorate --all
+*   3d80611 (HEAD -> main, tag: v1.0.0) Merge feature/test-suite into main
+|\  
+| * 9c2335f (feature/test-suite) Add pytest suite for service endpoints
+|/  
+* 7b5d99f Add text statistics Flask service
+
+$ git fetch origin && git branch -vv
+From https://github.com/ksamirdev/ensp461-devops-lab1
+ * [new branch]      main       -> origin/main
+  feature/test-suite 9c2335f Add pytest suite for service endpoints
+* main               8633054 Add declarative Jenkins pipeline with build, test, package and deploy stages
+
+$ git ls-remote origin
+86330543fd993df3600eda68a0140ce14d952143	HEAD
+86330543fd993df3600eda68a0140ce14d952143	refs/heads/main
+0c5591ccb274d23b947b7b0131be8651c181e904	refs/tags/v1.0.0
+3d806115c2da04bfee206015dbe13e45cc62841c	refs/tags/v1.0.0^{}
+

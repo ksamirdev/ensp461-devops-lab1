@@ -1,0 +1,23 @@
+$ git diff
+diff --git a/service/web.py b/service/web.py
+index e1ce503..07e2eb6 100644
+--- a/service/web.py
++++ b/service/web.py
+@@ -3,7 +3,7 @@ import os
+ 
+ from flask import Flask, jsonify, request
+ 
+-RELEASE = os.environ.get("RELEASE", "1.0.0")
++RELEASE = os.environ.get("RELEASE", "1.1.0")
+ app = Flask(__name__)
+ 
+ 
+
+$ git add service/web.py
+
+$ git commit -m "Bump release to 1.1.0 to exercise automatic deployment"
+[main e93d90f] Bump release to 1.1.0 to exercise automatic deployment
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+$ git tag -a v1.1.0 -m "Release deployed by SCM polling"
+

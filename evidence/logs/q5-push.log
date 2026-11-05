@@ -1,0 +1,9 @@
+$ git push origin main --tags
+To https://github.com/ksamirdev/ensp461-devops-lab1.git
+   3d80611..8633054  main -> main
+
+$ git push origin main --tags
+To https://github.com/ksamirdev/ensp461-devops-lab1.git
+   8633054..e93d90f  main -> main
+ * [new tag]         v1.1.0 -> v1.1.0
+
